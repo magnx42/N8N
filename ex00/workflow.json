@@ -1,0 +1,181 @@
+{
+  "name": "Meteo reviewer",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Meteo reviewer\n**premeir workflow solo**\nFait par: mageneix\nLe : 21 octobre 2026\n\nLe workflow recupere la meteo via openmeteo sur angouleme, si la temperature est au dessus de 20 degrés alors true sinon false",
+        "height": 224,
+        "width": 544
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -240
+      ],
+      "id": "f7575a79-967e-4cbd-83b8-7de02b6f17d7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "db8a7387-a916-45e5-a452-6dcb07bd021f",
+      "name": "RunClic"
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=45.6500&longitude=0.1500&current=temperature_2m",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "2a1fda3f-be3f-4de0-8a13-fee548f855bd",
+      "name": "OpenMeteoRequest"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "5517e78d-c979-4166-9e60-948698594737",
+              "leftValue": "={{ $json.current.temperature_2m }}",
+              "rightValue": 20,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        432,
+        0
+      ],
+      "id": "eed5e563-1847-4c12-bdd5-6276300b4631",
+      "name": "IfTempMoreThan20"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a521675-c58b-47c7-92bd-f7ffb6eaaf6c",
+              "name": "statut_meteo",
+              "value": "=Il fait actuellement {{ $json.current.temperature_2m }} degrés a Angouleme. Vous pouvez laisser le manteau a la maison !",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        656,
+        -208
+      ],
+      "id": "da871b3d-be1f-4b83-86d1-f1e8cfc2e932",
+      "name": "TempMoreThan20"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a521675-c58b-47c7-92bd-f7ffb6eaaf6c",
+              "name": "statut_meteo",
+              "value": "=Il fait actuellement {{ $json.current.temperature_2m }} degrés a Angouleme. Sortez les manteaux !",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        656,
+        128
+      ],
+      "id": "494892be-bcd6-4003-abc7-3cc157993d3e",
+      "name": "TempsLessThan20"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RunClic": {
+      "main": [
+        [
+          {
+            "node": "OpenMeteoRequest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenMeteoRequest": {
+      "main": [
+        [
+          {
+            "node": "IfTempMoreThan20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfTempMoreThan20": {
+      "main": [
+        [
+          {
+            "node": "TempMoreThan20",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "TempsLessThan20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "becacef8-86ac-4ba1-a12e-16e55920633f",
+  "meta": {
+    "instanceId": "7b07929461b9b7d2c7bd75da0f9abf06d197f62c7a23ddac4a63425170491679"
+  },
+  "nodeGroups": [],
+  "id": "tVgmgsBTTZmKT74K",
+  "tags": []
+}
