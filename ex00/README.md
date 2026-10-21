@@ -18,3 +18,5 @@ L'objectif de cet exercice est de recupérer la météo d'Angouleme au moment ou
 ```text
 [Trigger] ➔ [http request] ➔ [if] ┬➔ (True)  [set]
                                   └➔ (False) [set]
+```
+![Image Meteo Reviewer](../.imgs/MeteoReviewer.png)
