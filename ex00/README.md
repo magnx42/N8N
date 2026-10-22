@@ -20,3 +20,9 @@ L'objectif de cet exercice est de recupérer la météo d'Angouleme au moment ou
                                   └➔ (False) [set]
 ```
 ![Image Meteo Reviewer](../.imgs/MeteoReviewer.png)
+
+## ⚙️ Configuration & Dépendances
+
+* Api et services externes : Open-Meteo
+* Credentials necessaires : Aucun, API ouverte
+* Variables a modifier : latitude, longitude, current

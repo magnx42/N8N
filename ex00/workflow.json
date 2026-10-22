@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Meteo reviewer\n**premeir workflow solo**\nFait par: mageneix\nLe : 21 octobre 2026\n\nLe workflow recupere la meteo via openmeteo sur angouleme, si la temperature est au dessus de 20 degrés alors true sinon false",
+        "content": "## Meteo reviewer\n**premier workflow solo**\nFait par: mageneix\nLe : 21 octobre 2026\n\nLe workflow recupere la meteo via openmeteo sur angouleme, si la temperature est au dessus de 20 degrés alors true sinon false",
         "height": 224,
         "width": 544
       },

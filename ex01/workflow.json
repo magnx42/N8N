@@ -1,0 +1,226 @@
+{
+  "name": "Multi Meteo",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cf99bfd0-59d8-40b6-a171-d95bbd2ed04b",
+      "name": "RunClic"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  { json: { ville: \"Angoulême\", lat: 45.6500, lon: 0.1500 } },\n  { json: { ville: \"Bordeaux\", lat: 44.8378, lon: -0.5792 } },\n  { json: { ville: \"Poitiers\", lat: 46.5802, lon: 0.3404 } },\n  { json: { ville: \"La Rochelle\", lat: 46.1603, lon: -1.1511 } },\n  { json: { ville: \"Limoges\", lat: 45.8336, lon: 1.2611 } },\n  { json: { ville: \"Pau\", lat: 43.2951, lon: -0.3708 } },\n  { json: { ville: \"Bayonne\", lat: 43.4929, lon: -1.4748 } },\n  { json: { ville: \"Niort\", lat: 46.3237, lon: -0.4607 } },\n  { json: { ville: \"Périgueux\", lat: 45.1840, lon: 0.7215 } },\n  { json: { ville: \"Agen\", lat: 44.2032, lon: 0.6163 } },\n  { json: { ville: \"Mont-de-Marsan\", lat: 43.8903, lon: -0.5009 } },\n  { json: { ville: \"Brive-la-Gaillarde\", lat: 45.1596, lon: 1.5338 } },\n  { json: { ville: \"Arcachon\", lat: 44.6560, lon: -1.1654 } },\n  { json: { ville: \"Cognac\", lat: 45.6946, lon: -0.3276 } },\n  { json: { ville: \"Saintes\", lat: 45.7466, lon: -0.6305 } },\n  { json: { ville: \"Chatellerault\", lat: 46.8159, lon: 0.5446 } },\n  { json: { ville: \"Dax\", lat: 43.7077, lon: -1.0531 } },\n  { json: { ville: \"Bergerac\", lat: 44.8548, lon: 0.4827 } },\n  { json: { ville: \"Tulle\", lat: 45.2671, lon: 1.7725 } },\n  { json: { ville: \"Guéret\", lat: 46.1738, lon: 1.8711 } }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d92d6bb4-930d-4839-9529-e4f9d0a31248",
+      "name": "CityList"
+    },
+    {
+      "parameters": {
+        "jsCode": "let somme = 0;\nlet all = $input.all();\n\nfor(let items of all)\n{\n  somme += items.json.current.temperature_2m;\n}\n\nlet moyenne = Math.round(somme / all.length);\nreturn [\n  {\n    json: \n    {\n      nombre_de_ville: all.length,\n      temperature_moyenne: moyenne\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "20aa72e3-cfe1-4887-9ca1-6a7d484daffb",
+      "name": "AverageTemp"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "0880d73b-753d-4656-9e5b-4fa34cd5450e",
+              "leftValue": "={{ $json.temperature_moyenne }}",
+              "rightValue": 20,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        864,
+        0
+      ],
+      "id": "f15ab897-25f4-42f2-877f-03cf110172a9",
+      "name": "IfGreaterThan20"
+    },
+    {
+      "parameters": {
+        "content": "## Multi Meteo Discord WebHook\n**premiere experience avec les webhooks discord**\nFait par: mageneix\nLe : 22 octobre 2026\n\nLe workflow recupere la meteo via openmeteo sur une liste donnée de villes en nouvelle aquitaine et en fait la moyenne, si la temperature est au dessus de 20 degrés alors true sinon false, chawue condition envoie un message sur un channel discord via un webhook",
+        "height": 224,
+        "width": 656
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -256
+      ],
+      "id": "8cfaf4f4-99dc-4b88-a0c7-9b1f7b39e271",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.open-meteo.com/v1/forecast?latitude={{ $json. lat }}&longitude={{ $json.lon }}&current=temperature_2m",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        416,
+        0
+      ],
+      "id": "a8ea6655-f517-44d5-981e-83682d469686",
+      "name": "OpenMeteoRequest"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=La température moyenne en Nouvelle Aquitaine est de {{ $json.temperature_moyenne }} degrés, pour un total de {{ $json.nombre_de_ville }} villes. Pas besoin de manteau",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        -176
+      ],
+      "id": "b14a409c-eb55-4da1-a5d8-fd46fdf2ec9b",
+      "name": "DiscordTrue",
+      "webhookId": "7e851a75-e67b-467d-90d9-18092d29c07d",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "ldGRafq774uGRm6W",
+          "name": "Discord Webhook test (serv hermes)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=La température moyenne en Nouvelle Aquitaine est de {{ $json.temperature_moyenne }} degrés, pour un total de {{ $json.nombre_de_ville }} villes. Sortez vos manteaux !",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        144
+      ],
+      "id": "07f2d4d2-ebea-4463-b434-5d5aa05de190",
+      "name": "DiscordFalse",
+      "webhookId": "7e851a75-e67b-467d-90d9-18092d29c07d",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "ldGRafq774uGRm6W",
+          "name": "Discord Webhook test (serv hermes)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RunClic": {
+      "main": [
+        [
+          {
+            "node": "CityList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CityList": {
+      "main": [
+        [
+          {
+            "node": "OpenMeteoRequest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AverageTemp": {
+      "main": [
+        [
+          {
+            "node": "IfGreaterThan20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfGreaterThan20": {
+      "main": [
+        [
+          {
+            "node": "DiscordTrue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DiscordFalse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenMeteoRequest": {
+      "main": [
+        [
+          {
+            "node": "AverageTemp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d1813b76-106b-42a9-b4fe-e60f82f10265",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7b07929461b9b7d2c7bd75da0f9abf06d197f62c7a23ddac4a63425170491679"
+  },
+  "nodeGroups": [],
+  "id": "RHLazY4sUZ0wQIw7",
+  "tags": []
+}
