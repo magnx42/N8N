@@ -44,7 +44,7 @@ L'objectif de cet exercice est de récupérer chaque matin à 8h les derniers ar
                                                                                                ├➔ [Set Infra] ➔ [Limit 5] ┼➔ [Merge] ➔ [Aggregate] ➔ [Discord]
                                                                                                └➔ [Set Autre] ➔ [Limit 5] ┘
 ```
-<!-- ![Image Tech News](../.imgs/TechNews.png) -->
+![Image Tech News](../.imgs/TechNews.png)
 
 ## ⚙️ Configuration & Dépendances
 

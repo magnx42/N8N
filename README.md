@@ -21,7 +21,8 @@ Ce dépôt répertorie mes exercices et workflows créés sur **n8n** dans le ca
 ├── README.md
 ├── .imgs/
 │   ├── MeteoReviewer.png
-│   └── MultiMeteo.png
+│   ├── MultiMeteo.png
+│   └── TechNews.png
 ├── ex00/          # Meteo Reviewer
 │   ├── README.md
 │   └── workflow.json
