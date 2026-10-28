@@ -1,0 +1,899 @@
+ {
+  "name": "TechNews",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&numericFilters=created_at_i>2400,points>50&hitsPerPage=100",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        192,
+        0
+      ],
+      "id": "37593fc2-ee86-4a2b-8077-960c8d999771",
+      "name": "HackerNewsRequest"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "hits",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        0
+      ],
+      "id": "cc9e1f56-67ad-4c52-96ba-0a45abadbcf6",
+      "name": "SplitData"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b2caf2f7-f8bb-40a4-8bba-fb03255672f2",
+              "name": "Title",
+              "value": "={{ $json._highlightResult.title.value }}",
+              "type": "string"
+            },
+            {
+              "id": "3c55a257-d267-43ff-b661-43f99abfcce2",
+              "name": "Url",
+              "value": "={{ $json._highlightResult.url.value }}",
+              "type": "string"
+            },
+            {
+              "id": "1fb02370-a56a-4421-a476-6545a180ada6",
+              "name": "Date",
+              "value": "={{ $json.created_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        576,
+        0
+      ],
+      "id": "703a3d48-d8cc-47a4-98de-5dcef751f561",
+      "name": "NormFields"
+    },
+    {
+      "parameters": {
+        "content": "Switch: \npour de mots complets \\b au debut et a la fin du mot et a la fin ajouter i pour rendre insensible a la casse. ce quil y a entre les / c'est le motif, ce quil y a apres ce sont des flags/des options"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        -224
+      ],
+      "id": "ebe41394-7b21-45c7-a773-c712c81cb8b7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aacd6d79-54cb-4bc4-9304-fbd1c38f94be",
+              "name": "categorie",
+              "value": "IA",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1600,
+        -208
+      ],
+      "id": "4354aa17-4682-48a2-b311-32f01311f9aa",
+      "name": "IA"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aacd6d79-54cb-4bc4-9304-fbd1c38f94be",
+              "name": "categorie",
+              "value": "Sécu",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1600,
+        -80
+      ],
+      "id": "45d376f7-fc3c-4048-844d-41b6c24ca622",
+      "name": "Sécu"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aacd6d79-54cb-4bc4-9304-fbd1c38f94be",
+              "name": "categorie",
+              "value": "Infra",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1600,
+        48
+      ],
+      "id": "4d13583a-7421-419b-b70a-c6c9a78f5c89",
+      "name": "Infra"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aacd6d79-54cb-4bc4-9304-fbd1c38f94be",
+              "name": "categorie",
+              "value": "Autre",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1600,
+        176
+      ],
+      "id": "93266c51-1f8a-4311-b908-6186175688c5",
+      "name": "Autre"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        -208
+      ],
+      "id": "aa36d0ce-4dfe-4d75-bec9-5f2b66130dcd",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        48
+      ],
+      "id": "62de993c-0d26-4e91-8bf8-27b1c06785fe",
+      "name": "Limit2"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        176
+      ],
+      "id": "cd7975c2-20da-4cdc-9add-936d186748bd",
+      "name": "Limit3"
+    },
+    {
+      "parameters": {
+        "content": "Champ description de l'embed généré par ia",
+        "height": 80,
+        "width": 198
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2384,
+        -112
+      ],
+      "id": "c5113f24-5020-46e6-8b3b-d5f5f661c02c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "75292cc1-c9a2-4967-b739-c01b7463c285",
+      "name": "HourRun"
+    },
+    {
+      "parameters": {
+        "url": "https://dev.to/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        -192
+      ],
+      "id": "5b8184e4-d4c9-4157-bcb5-9143f5a26e23",
+      "name": "Dev.toRssRequest"
+    },
+    {
+      "parameters": {
+        "url": "https://korben.info/feedfull",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        224
+      ],
+      "id": "a1b77490-f102-4d1d-a6e5-ccca2104cb8f",
+      "name": "KorbenRequest"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "725ae8f3-a16c-4098-9fdf-7bae593ea40f",
+              "name": "Title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "257ae35a-ea11-43a5-a45b-4221a71c39db",
+              "name": "Url",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "a79de3e7-9a57-471c-9249-393f0cee999d",
+              "name": "Date",
+              "value": "={{ $json.pubDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        384,
+        -192
+      ],
+      "id": "15b4f594-2d89-47a3-b104-7104df4201fc",
+      "name": "NormFields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "725ae8f3-a16c-4098-9fdf-7bae593ea40f",
+              "name": "Title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "257ae35a-ea11-43a5-a45b-4221a71c39db",
+              "name": "Url",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "7dc8ea2e-fa18-4ba7-bf5c-4bf6d044fd22",
+              "name": "Date",
+              "value": "={{ $json.pubDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        384,
+        224
+      ],
+      "id": "9b26eb9b-3f98-4a36-81a5-a0b1788fef51",
+      "name": "NormFields2"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        816,
+        0
+      ],
+      "id": "8fc59cff-dd2f-46eb-9f5a-3ef88cce6073",
+      "name": "MergeAllRequests"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "86c9fb44-a1f2-435a-a261-c6def1ce11cd",
+              "leftValue": "={{ $json.Date }}",
+              "rightValue": "={{ $now.minus({hours: 24}) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.4,
+      "position": [
+        1008,
+        16
+      ],
+      "id": "10967afe-2c10-462a-9955-55f19cadcd0e",
+      "name": "Filter24Hours"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "Date",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        16
+      ],
+      "id": "eb70cf80-629d-4917-9d75-ca27455d61f8",
+      "name": "SortByDate"
+    },
+    {
+      "parameters": {
+        "content": "## Tech News\n**Premiere manipulation de RSS/split/merge/aggregate/switch**\nFait par: mageneix\nLe : 23 octobre 2026\n\nLe workflow récupere les derniers articles sur dev.to, hackernews et korben, trie les données, ne garde que ceux publiés les 24 dernieres heures et les trie par categorie dans la limite de 5 par catégorie avant de tout envoyer via un embed sur discord.",
+        "height": 224,
+        "width": 544
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        -256
+      ],
+      "id": "623bdd49-5d0a-4c07-acd9-f3ab57ce9619",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Title }}",
+                    "rightValue": "/AI|IA|LLM|GPT|Claude|OpenAI|Gemini|agent|MCP/i",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    },
+                    "id": "c7512895-cce5-4bbe-a4f8-9143f2482b6a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "77d011fb-2cba-44f8-8e48-afc044b26929",
+                    "leftValue": "={{ $json.Title }}",
+                    "rightValue": "/security|sécurité|faille|CVE|hack|vulnerability|exploit|malware|breach/i",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "472b0631-6ac3-40bc-b617-51c464d8428f",
+                    "leftValue": "={{ $json.Title }}",
+                    "rightValue": "/Linux|docker|Kubernetes|server|serveur|cloud|DevOps|database|Postgres/i",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "80c99a3d-8204-4699-b10f-93a259c1f0e6",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.5,
+      "position": [
+        1376,
+        -16
+      ],
+      "id": "82ed77f3-c880-4c65-93b6-a0b40c6a791a",
+      "name": "SwitchByCategories"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        -80
+      ],
+      "id": "b58b07d3-645b-4d8f-9dbb-1a570bbc7b4f",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2080,
+        -48
+      ],
+      "id": "927a63a6-45be-456e-b803-f3d4bf7b9817",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        -16
+      ],
+      "id": "5aa6dd99-49ec-4dd5-86ea-d35dbdafa8ec",
+      "name": "JoinInOneTab"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ ['IA', 'Sécu', 'Infra', 'Autre'].map(cat => {\n  const articles = $json.data.filter(a => a.categorie === cat);\n  if (articles.length === 0) return '';\n  return `**${cat}**\\n` + articles.map(a => `• [${a.Title}](${a.Url})`).join('\\n');\n}).filter(bloc => bloc !== '').join('\\n\\n') }}",
+              "color": "#A20202",
+              "title": "Actualité Tech"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2384,
+        -16
+      ],
+      "id": "af23694a-078e-4447-9a80-b813f10115f6",
+      "name": "DiscordSendEmbed",
+      "webhookId": "fe7270ce-7037-41d2-9456-89e994e14d0f",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "ldGRafq774uGRm6W",
+          "name": "Discord Webhook test (serv hermes)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HackerNewsRequest": {
+      "main": [
+        [
+          {
+            "node": "SplitData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitData": {
+      "main": [
+        [
+          {
+            "node": "NormFields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NormFields": {
+      "main": [
+        [
+          {
+            "node": "MergeAllRequests",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "IA": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sécu": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Infra": {
+      "main": [
+        [
+          {
+            "node": "Limit2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Autre": {
+      "main": [
+        [
+          {
+            "node": "Limit3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Limit3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "HourRun": {
+      "main": [
+        [
+          {
+            "node": "HackerNewsRequest",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "KorbenRequest",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Dev.toRssRequest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dev.toRssRequest": {
+      "main": [
+        [
+          {
+            "node": "NormFields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "KorbenRequest": {
+      "main": [
+        [
+          {
+            "node": "NormFields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NormFields1": {
+      "main": [
+        [
+          {
+            "node": "MergeAllRequests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NormFields2": {
+      "main": [
+        [
+          {
+            "node": "MergeAllRequests",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "MergeAllRequests": {
+      "main": [
+        [
+          {
+            "node": "Filter24Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter24Hours": {
+      "main": [
+        [
+          {
+            "node": "SortByDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SortByDate": {
+      "main": [
+        [
+          {
+            "node": "SwitchByCategories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SwitchByCategories": {
+      "main": [
+        [
+          {
+            "node": "IA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sécu",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Infra",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Autre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "JoinInOneTab",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JoinInOneTab": {
+      "main": [
+        [
+          {
+            "node": "DiscordSendEmbed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Paris",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "8d388590-97d1-4fb2-b93f-1bf4d564a6bb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7b07929461b9b7d2c7bd75da0f9abf06d197f62c7a23ddac4a63425170491679"
+  },
+  "nodeGroups": [],
+  "id": "bs5L42aIKKKuof3B",
+  "tags": []
+}

@@ -11,7 +11,7 @@ L'objectif de cet exercice est de recupérer la météo d'une liste de ville don
 * **`[CityList]`** : Code node JavaScript qui va return une liste de ville avec leurs coordonnées.
 * **`[OpenMeteoRequest]`** : Lance une requete vers OpenMeteo par ville via leur api pour recuperer des donnees sur le meteo actuellement (avec option current) et avec la configuration de la latitude et longitude de chaque ville presente dans le json en import.
 * **`[AverageTemp]`** : Code node JavaScript qui va return le nombre de villes analysées et la moyenne de tempéraure de toutes ces villes.
-* **`[IfTempMoreThan20]`** : Si la temperature a Angouleme depasse les 20 degres -> true sinon -> false 
+* **`[IfTempMoreThan20]`** : Si la température moyenne dépasse les 20 degrés -> true sinon -> false 
 * **`[DiscordTrue/DiscordFalse]`** : Message discord qui annonce le nombre de villes comptées et la temperature moyenne.
 
 ---
@@ -22,7 +22,7 @@ L'objectif de cet exercice est de recupérer la météo d'une liste de ville don
 [Trigger] ➔ [Code JS] ➔ [http request] ➔ [Code JS] ➔ [if] ┬➔ (True)  [Discord Message]
                                                           └➔ (False) [Discord Message]
 ```
-![Image Meteo Reviewer](../.imgs/MultiMeteo.png)
+![Image Multi Meteo](../.imgs/MultiMeteo.png)
 
 ## ⚙️ Configuration & Dépendances
 
